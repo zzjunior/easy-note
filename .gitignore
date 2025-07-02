@@ -45,6 +45,7 @@ debug_*.php
 create_tables.php
 update_table.php
 install_tags_automations.php
+add_sample_tags.php
 
 # IDE/Editor files
 .vscode/
