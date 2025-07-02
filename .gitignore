@@ -1,0 +1,75 @@
+# Dependencies
+/# Dependências do Composer
+/vendor/
+
+# Banco de dados
+/db/*.db
+
+# Logs
+*.log
+
+# Arquivos de teste
+test_*.php
+debug_*.php
+*_test.php
+
+# Arquivos temporários
+*.tmp
+*.temp
+
+# Cache
+.cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Outros
+*.bak
+*.orig
+composer.lock
+
+# Database
+/db/*.db
+
+# Test files
+test_*.php
+debug_*.php
+*_test.php
+create_tables.php
+update_table.php
+install_tags_automations.php
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+error_log
+
+# Cache
+*.cache
+/cache/
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Temporary files
+/tmp/
+*.tmp

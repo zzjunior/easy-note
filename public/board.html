@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Board - Easy Note</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0079bf',
+                        'primary-hover': '#005a8b',
+                        secondary: '#f4f5f7',
+                        success: '#61bd4f',
+                        danger: '#eb5a46',
+                        warning: '#f2d600',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="assets/css/board.css">
+</head>
+<body>
+    <div class="board-container">
+        <!-- Header do Board -->
+        <header class="board-header">
+            <div class="board-nav">
+                <button id="backToHome" class="btn-back">← Voltar aos Boards</button>
+                <h1 id="boardTitle" class="board-title">Carregando...</h1>
+            </div>
+            <div class="board-actions">
+                <div class="text-sm text-gray-600 mr-4 hidden md:block">
+                    💡 Dica: Arraste os cards entre as listas para organizá-los
+                </div>
+                <button id="addListBtn" class="btn-primary">+ Adicionar Lista</button>
+            </div>
+        </header>
+
+        <!-- Container das Listas -->
+        <main class="lists-container" id="listsContainer">
+            <div class="loading">Carregando listas...</div>
+        </main>
+    </div>
+
+    <!-- Modal para criar/editar lista -->
+    <div id="listModal" class="modal">
+        <div class="modal-content">
+            <h3 id="listModalTitle">Nova Lista</h3>
+            <form id="listForm">
+                <input type="hidden" id="listId" name="listId">
+                <input type="text" id="listTitle" name="listTitle" placeholder="Nome da lista..." required maxlength="100">
+                <div class="modal-actions">
+                    <button type="submit" id="saveListBtn">Salvar</button>
+                    <button type="button" id="cancelListBtn">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para visualizar card -->
+    <div id="viewCardModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="viewCardTitle">Título do Card</h3>
+                <div class="modal-actions-header">
+                    <button id="editCardFromView" class="btn-icon" title="Editar card">✏️</button>
+                    <button id="deleteCardFromView" class="btn-icon" title="Excluir card">🗑️</button>
+                    <button id="closeViewCard" class="btn-icon" title="Fechar">✖️</button>
+                </div>
+            </div>
+            <div class="card-details">
+                <div class="detail-section">
+                    <h4>🏷️ Tags</h4>
+                    <div id="viewCardTags" class="tags-container">
+                        <div class="no-tags">Nenhuma tag adicionada</div>
+                    </div>
+                    <div class="tags-actions">
+                        <button id="manageTagsBtn" class="btn-secondary btn-sm">Gerenciar Tags</button>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <h4>📝 Descrição</h4>
+                    <div id="viewCardDescription" class="description-content">
+                        Sem descrição
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <h4>📊 Informações</h4>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Lista:</span>
+                            <span id="viewCardList">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Criado em:</span>
+                            <span id="viewCardDate">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para criar/editar card -->
+    <div id="cardModal" class="modal">
+        <div class="modal-content">
+            <h3 id="cardModalTitle">Novo Card</h3>
+            <form id="cardForm">
+                <input type="hidden" id="cardId" name="cardId">
+                <input type="hidden" id="cardListId" name="cardListId">
+                <input type="text" id="cardTitle" name="cardTitle" placeholder="Título do card..." required maxlength="200">
+                <textarea id="cardDescription" name="cardDescription" placeholder="Descrição (opcional)..." rows="4"></textarea>
+                <div class="modal-actions">
+                    <button type="submit" id="saveCardBtn">Salvar</button>
+                    <button type="button" id="cancelCardBtn">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para confirmar exclusão -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <h3>Confirmar Exclusão</h3>
+            <p id="deleteMessage">Tem certeza que deseja excluir este item?</p>
+            <div class="modal-actions">
+                <button id="confirmDelete" class="btn-danger">Excluir</button>
+                <button id="cancelDelete" class="btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para gerenciar tags -->
+    <div id="tagsModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3>🏷️ Gerenciar Tags</h3>
+                <button id="closeTagsModal" class="btn-icon" title="Fechar">✖️</button>
+            </div>
+            
+            <div class="tags-management">
+                <!-- Seção de tags do card -->
+                <div class="section">
+                    <h4>Tags do Card</h4>
+                    <div id="cardCurrentTags" class="tags-list">
+                        <!-- Tags atuais do card serão inseridas aqui -->
+                    </div>
+                </div>
+
+                <!-- Seção de todas as tags disponíveis -->
+                <div class="section">
+                    <h4>Tags Disponíveis</h4>
+                    <div class="tags-search">
+                        <input type="text" id="tagSearchInput" placeholder="Buscar tags..." class="search-input">
+                        <button id="createNewTagBtn" class="btn-primary btn-sm">+ Nova Tag</button>
+                    </div>
+                    <div id="availableTags" class="tags-grid">
+                        <!-- Tags disponíveis serão inseridas aqui -->
+                    </div>
+                </div>
+
+                <!-- Seção para criar nova tag -->
+                <div id="newTagSection" class="section hidden">
+                    <h4>Criar Nova Tag</h4>
+                    <form id="newTagForm" class="new-tag-form">
+                        <div class="form-row">
+                            <input type="text" id="newTagName" placeholder="Nome da tag..." required maxlength="50">
+                            <input type="color" id="newTagColor" value="#0079bf" title="Cor da tag">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary btn-sm">Criar Tag</button>
+                            <button type="button" id="cancelNewTag" class="btn-secondary btn-sm">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button id="saveTagsBtn" class="btn-primary">Salvar Alterações</button>
+                <button id="cancelTagsBtn" class="btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/board.js"></script>
+</body>
+</html>

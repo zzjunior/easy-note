@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easy Note - Sistema de Notas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0079bf',
+                        'primary-hover': '#005a8b',
+                        secondary: '#f4f5f7',
+                        success: '#61bd4f',
+                        danger: '#eb5a46',
+                        warning: '#f2d600',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-purple-600">
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Header -->
+        <header class="text-center mb-16 animate-slide-up">
+            <div class="animate-float">
+                <h1 class="text-6xl md:text-8xl font-bold text-white mb-4 drop-shadow-2xl">
+                    Easy Note
+                </h1>
+            </div>
+        </header>
+
+        <main class="space-y-12">
+            <!-- Seção para criar novo board -->
+            <section class="flex justify-center animate-slide-up delay-200">
+                <div class="glass-card w-full max-w-md rounded-2xl shadow-2xl p-8 hover-lift">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">
+                        ✨ Criar Novo Fluxo
+                    </h2>
+                    <form id="createBoardForm" class="space-y-4">
+                        <div class="relative">
+                            <input 
+                                type="text" 
+                                id="boardTitle" 
+                                placeholder="Digite o nome do seu board..." 
+                                required
+                                maxlength="100"
+                                class="w-full px-4 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-4 focus:ring-primary/20 outline-none transition-all duration-300 bg-white/80 backdrop-blur-sm"
+                            >
+                        </div>
+                        <button 
+                            type="submit" 
+                            class="btn-modern w-full bg-gradient-to-r from-primary to-primary-hover text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 micro-bounce text-lg"
+                        >
+                            🚀 Criar Fluxo
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Seção dos boards existentes -->
+            <section class="glass-card rounded-3xl shadow-2xl p-8 animate-slide-up delay-400">
+                <h2 class="text-3xl font-bold text-gray-800 mb-8 flex items-center gap-3">
+                    <span class="text-4xl">📌</span>
+                    Meus Fluxos 
+                </h2>
+                <div id="boardsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <!-- Os boards serão carregados aqui via JavaScript -->
+                    <div class="col-span-full text-center py-12">
+                        <div class="loading-shimmer h-8 w-48 mx-auto rounded-lg"></div>
+                        <p class="text-gray-500 mt-4">Carregando boards...</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal para confirmar exclusão -->
+    <div id="deleteModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="glass-card rounded-2xl shadow-2xl max-w-md w-full p-8 transform scale-95 transition-transform duration-300">
+            <div class="text-center">
+                <div class="text-6xl mb-4">⚠️</div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-4">Confirmar Exclusão</h3>
+                <p class="text-gray-600 mb-8 leading-relaxed">
+                    Tem certeza que deseja excluir este board? Esta ação não pode ser desfeita.
+                </p>
+                <div class="flex gap-4 justify-center">
+                    <button 
+                        id="confirmDelete" 
+                        class="bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-300 micro-bounce"
+                    >
+                        🗑️ Excluir
+                    </button>
+                    <button 
+                        id="cancelDelete" 
+                        class="bg-gray-200 text-gray-700 font-semibold px-6 py-3 rounded-xl hover:bg-gray-300 transition-all duration-300 micro-bounce"
+                    >
+                        ❌ Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/app.js"></script>
+</body>
+</html>
