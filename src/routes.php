@@ -9,9 +9,12 @@ use App\Controllers\TagController;
 use App\Controllers\AutomationController;
 
 return function(App $app){
-    // Rotas de Boards
+    // Rotas de Fluxo
     $app->get('/boards', BoardController::class . ':list');
     $app->post('/boards', BoardController::class . ':create');
+    $app->get('/boards/{boardId}', BoardController::class . ':get');
+    $app->put('/boards/{boardId}', BoardController::class . ':update');
+    $app->delete('/boards/{boardId}', BoardController::class . ':delete');
     
     // Rotas de Listas
     $app->get('/boards/{boardId}/lists', ListController::class . ':listByBoard');
@@ -20,6 +23,7 @@ return function(App $app){
     $app->delete('/lists/{listId}', ListController::class . ':delete');
     
     // Rotas de Cards
+    $app->get('/boards/{boardId}/cards', CardController::class . ':listByBoard');
     $app->get('/lists/{listId}/cards', CardController::class . ':listByList');
     $app->get('/cards/{cardId}', CardController::class . ':get');
     $app->post('/cards', CardController::class . ':create');
@@ -35,12 +39,14 @@ return function(App $app){
     $app->delete('/tags/{id}', TagController::class . ':delete');
     
     // Rotas para associar tags com cards
+    $app->get('/cards/{card_id}/tags/{tag_id}', TagController::class . ':getCardTag');
     $app->post('/cards/{card_id}/tags/{tag_id}', TagController::class . ':addToCard');
     $app->delete('/cards/{card_id}/tags/{tag_id}', TagController::class . ':removeFromCard');
     $app->get('/cards/{card_id}/tags', TagController::class . ':getCardTags');
     $app->put('/cards/{card_id}/tags', TagController::class . ':updateCardTags');
 
-    // Rotas para Automações
+    // Rotas para Automações de fluxo
+    $app->get('/automations', AutomationController::class . ':listAll');
     $app->get('/boards/{board_id}/automations', AutomationController::class . ':list');
     $app->post('/automations', AutomationController::class . ':create');
     $app->put('/automations/{id}', AutomationController::class . ':update');
